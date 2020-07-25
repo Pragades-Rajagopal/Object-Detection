@@ -13,7 +13,7 @@ with open('coco.names', 'r') as file:
 layer_names = net.getLayerNames()
 output_layers = [(layer_names[i[0]-1]) for i in net.getUnconnectedOutLayers()]
 
-
+colors = np.random.uniform(0, 255, size=(len(classes), 3))
 # Loading image
 img = cv2.imread('Image.jpg')
 img = cv2.resize(img, None, fx=0.3, fy=0.4)
@@ -67,8 +67,9 @@ for i in range(num_of_Obj_detected):
         x, y, w, h = boxes[i]
         labels = str(classes[class_ids[i]])
         # print(labels)
-        cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
-        cv2.putText(img, labels, (x, y + 30), font, 1, (0, 0, 0), 3)
+        color = colors[i]
+        cv2.rectangle(img, (x, y), (x + w, y + h), color, 2)
+        cv2.putText(img, labels, (x, y + 35), font, 2, color, 2)
         # image, text, origination, fontface, fontscale, color, thickness
 
 cv2.imshow('Image', img)
