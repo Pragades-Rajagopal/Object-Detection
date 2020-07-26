@@ -5,6 +5,7 @@ from numpy.core.fromnumeric import size
 
 # Loading Yolo
 net = cv2.dnn.readNet('yolov3.weights', 'yolov3.cfg')
+image = 'Image.jpg'
 
 classes = []
 with open('coco.names', 'r') as file:
@@ -15,7 +16,7 @@ output_layers = [(layer_names[i[0]-1]) for i in net.getUnconnectedOutLayers()]
 
 colors = np.random.uniform(0, 255, size=(len(classes), 3))
 # Loading image
-img = cv2.imread('Image.jpg')
+img = cv2.imread(image)
 img = cv2.resize(img, None, fx=0.3, fy=0.4)
 width, height, channels = img.shape
 # print(img.shape)
