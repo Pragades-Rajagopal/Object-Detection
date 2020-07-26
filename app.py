@@ -60,8 +60,8 @@ for out in outs:
 
 font = cv2.FONT_HERSHEY_PLAIN
 indexes = cv2.dnn.NMSBoxes(boxes, confidences, 0.5, 0.4)
-
 # boxes, scores, score threshold, nms threshold
+
 num_of_Obj_detected = len(boxes)
 for i in range(num_of_Obj_detected):
     if i in indexes:
