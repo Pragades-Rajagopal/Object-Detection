@@ -1,13 +1,16 @@
 from numpy.core.fromnumeric import size
 from cv2 import cv2
 import numpy as np
+import time
 
 #loading yolov3-tiny
 net = cv2.dnn.readNet('yolov3-tiny.weights', 'yolov3-tiny.cfg')
 
 # Initializing webcam
 cap = cv2.VideoCapture(0) #webcam is in channel-0
-
+font = cv2.FONT_HERSHEY_PLAIN
+starting_time = time.time()
+frame_id = 0
 classes = []
 with open('coco.names', 'r') as file:
     classes = [(lines.strip()) for lines in file.readlines()]
@@ -17,6 +20,7 @@ output_layers = [(layer_names[i[0] - 1]) for i in net.getUnconnectedOutLayers()]
 colors = np.random.uniform(0, 255, size=(len(classes), 3))
 while True:
     _, frame = cap.read()
+    frame_id += 1
 
     width, height, channels = frame.shape
     blob = cv2.dnn.blobFromImage(frame, 0.00392, (416, 416), (0, 0, 0), True, crop=False)
@@ -62,6 +66,10 @@ while True:
             cv2.putText(frame, labels + " " + str(round(confidence, 2)), (x, y + 30), font, 3, (255,255,255), 3)
 
 
+    elapsed_time = time.time() - starting_time
+    fps = frame_id / elapsed_time
+    cv2.putText(frame, "FPS: " + str(round(fps, 2)), (10, 50), font, 3, (0, 0, 0), 3)
+    
     cv2.imshow('Image', frame)
     key = cv2.waitKey(1)
     if key == 10:
